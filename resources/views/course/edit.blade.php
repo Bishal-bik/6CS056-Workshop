@@ -1,52 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Course</title>
-</head>
-<body>
+<x-layouts.app title="Edit Course">
 
-    <h1>Edit Course</h1>
+    <div class="card">
+        <h2>Edit Course</h2>
 
-    <form action="/courses/{{ $course->id }}" method="POST">
-        @csrf
-        @method('PUT')
+        <form action="{{ route('courses.update', $course) }}" method="POST">
+            @csrf
+            @method('PUT')
 
-        <label>Course Name:</label>
-        <input type="text" name="name" value="{{ $course->name }}" required>
-        <br><br>
+            <x-form-input
+                name="name"
+                label="Course Name"
+                :value="$course->name"
+                required
+            />
 
-        <label>Description:</label>
-        <textarea name="description">{{ $course->description }}</textarea>
-        <br><br>
+            <x-form-textarea
+                name="description"
+                label="Description"
+                :value="$course->description"
+            />
 
-        <label>Duration:</label>
-        <input type="text" name="duration" value="{{ $course->duration }}" required>
-        <br><br>
+            <x-form-input
+                name="duration"
+                label="Duration"
+                :value="$course->duration"
+                required
+            />
 
-        <label>Fee:</label>
-        <input type="number" name="fee" step="0.01" value="{{ $course->fee }}" required>
-        <br><br>
+            <x-form-input
+                name="fee"
+                label="Fee"
+                type="number"
+                step="0.01"
+                :value="$course->fee"
+                required
+            />
 
-        <label>Difficulty:</label>
-        <select name="difficulty" required>
-            <option value="Easy" {{ $course->difficulty == 'Easy' ? 'selected' : '' }}>Easy</option>
-            <option value="Medium" {{ $course->difficulty == 'Medium' ? 'selected' : '' }}>Medium</option>
-            <option value="Hard" {{ $course->difficulty == 'Hard' ? 'selected' : '' }}>Hard</option>
-        </select>
-        <br><br>
+            <div class="form-group">
+                <label for="difficulty">Difficulty</label>
+                <select name="difficulty" id="difficulty" class="form-control" required>
+                    @foreach (['Easy', 'Medium', 'Hard'] as $level)
+                        <option value="{{ $level }}" @selected($course->difficulty === $level)>
+                            {{ $level }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-        <label>Status:</label>
-        <select name="is_active" required>
-            <option value="1" {{ $course->is_active ? 'selected' : '' }}>Active</option>
-            <option value="0" {{ !$course->is_active ? 'selected' : '' }}>Inactive</option>
-        </select>
-        <br><br>
+            <div class="form-group">
+                <label for="is_active">Status</label>
+                <select name="is_active" id="is_active" class="form-control" required>
+                    <option value="1" @selected($course->is_active)>Active</option>
+                    <option value="0" @selected(!$course->is_active)>Inactive</option>
+                </select>
+            </div>
 
-        <button type="submit">Update Course</button>
-    </form>
+            <button type="submit" class="btn">Update Course</button>
+        </form>
 
-    <br>
-    <a href="/courses">Back to Course List</a>
+        <br>
+        <a href="{{ route('courses.index') }}">Back to Courses</a>
+    </div>
 
-</body>
-</html>
+</x-layouts.app>

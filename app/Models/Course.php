@@ -14,4 +14,12 @@ class Course extends Model
         'difficulty',
         'is_active',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'fee' => 'decimal:2',
+            'is_active' => 'boolean',
+        ];
+    }
 }

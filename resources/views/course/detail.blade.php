@@ -1,21 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Course Details</title>
-</head>
-<body>
+<x-layouts.app title="Course Details">
 
-    <h1>Course Details</h1>
+    <div class="card">
+        <h2>Course Details</h2>
 
-    <p><strong>ID:</strong> {{ $course->id }}</p>
-    <p><strong>Name:</strong> {{ $course->name }}</p>
-    <p><strong>Description:</strong> {{ $course->description }}</p>
-    <p><strong>Duration:</strong> {{ $course->duration }}</p>
-    <p><strong>Fee:</strong> {{ $course->fee }}</p>
-    <p><strong>Difficulty:</strong> {{ $course->difficulty }}</p>
-    <p><strong>Status:</strong> {{ $course->is_active ? 'Active' : 'Inactive' }}</p>
+        <p><strong>ID:</strong> {{ $course->id }}</p>
+        <p><strong>Name:</strong> {{ $course->name }}</p>
+        <p><strong>Description:</strong> {{ $course->description ?? 'N/A' }}</p>
+        <p><strong>Duration:</strong> {{ $course->duration }}</p>
+        <p><strong>Fee:</strong> {{ $course->fee }}</p>
+        <p><strong>Difficulty:</strong> {{ $course->difficulty }}</p>
+        <p><strong>Status:</strong> {{ $course->is_active ? 'Active' : 'Inactive' }}</p>
 
-    <a href="/courses">Back to Course List</a>
+        <a href="{{ route('courses.edit', $course) }}" class="btn">Edit Course</a>
 
-</body>
-</html>
+        <a href="{{ route('courses.index') }}" class="btn">Back to Courses</a>
+    </div>
+
+</x-layouts.app>
