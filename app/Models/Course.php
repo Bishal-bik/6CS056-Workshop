@@ -13,6 +13,7 @@ class Course extends Model
         'fee',
         'difficulty',
         'is_active',
+        'user_id',
     ];
 
     protected function casts(): array
@@ -21,5 +22,10 @@ class Course extends Model
             'fee' => 'decimal:2',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

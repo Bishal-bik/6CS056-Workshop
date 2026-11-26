@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CourseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return view('course.list', [
-            'courses' => Course::all(),
+            'courses' => $request->user()->role === 'admin'
+                ? Course::latest()->get()
+                : $request->user()->courses()->latest()->get(),
         ]);
     }
 
@@ -21,7 +24,8 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
-        $course = Course::create($request->validate($this->rules()));
+        $validated = $request->validate($this->rules());
+        $course = $request->user()->courses()->create($validated);
 
         return redirect()
             ->route('courses.index')
@@ -30,16 +34,22 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
+        Gate::authorize('manage-course', $course);
+
         return view('course.detail', ['course' => $course]);
     }
 
     public function edit(Course $course)
     {
+        Gate::authorize('manage-course', $course);
+
         return view('course.edit', ['course' => $course]);
     }
 
     public function update(Request $request, Course $course)
     {
+        Gate::authorize('manage-course', $course);
+
         $course->update($request->validate($this->rules()));
 
         return redirect()
@@ -49,6 +59,8 @@ class CourseController extends Controller
 
     public function destroy(Course $course)
     {
+        Gate::authorize('manage-course', $course);
+
         $course->delete();
 
         return redirect()
