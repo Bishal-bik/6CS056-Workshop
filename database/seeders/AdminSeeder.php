@@ -12,8 +12,10 @@ class AdminSeeder extends Seeder
     {
         $password = env('ADMIN_PASSWORD');
 
-        if (! is_string($password) || $password === '') {
-            throw new \RuntimeException('Set ADMIN_PASSWORD in your .env file before seeding the administrator.');
+        if (!is_string($password) || $password === '') {
+            throw new \RuntimeException(
+                'Set ADMIN_PASSWORD in your .env file before seeding the administrator.'
+            );
         }
 
         User::updateOrCreate(
