@@ -13,7 +13,8 @@ class Course extends Model
         'fee',
         'difficulty',
         'is_active',
-    ];
+        'user_id',
+    ];  
 
     protected function casts(): array
     {
